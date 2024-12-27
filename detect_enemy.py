@@ -3,7 +3,6 @@ import time
 import os
 import cv2
 import numpy as np
-import Quartz
 from AppKit import NSWorkspace, NSApplicationActivateIgnoringOtherApps
 from pynput import mouse
 from pynput.mouse import Button, Listener
@@ -43,18 +42,17 @@ def capture_screenshots(duration=10, interval=1, directory="screenshots", window
             enemy_detected = detect_enemy_in_screenshot(screenshot)
 
             # ONLY SAVE if user clicked the left mouse button
-            if left_click_flag:
-                left_click_flag = False  # Reset flag
-                screenshot_count += 1
-                filename = f"screenshot_{screenshot_count:04d}.png"
-                
-                if enemy_detected:
-                    filepath = os.path.join(directory, filename)
-                else:
-                    filepath = os.path.join(directory, "archive", filename)
+          
+            screenshot_count += 1
+            filename = f"screenshot_{screenshot_count:04d}.png"
+            
+            if enemy_detected:
+                filepath = os.path.join(directory, filename)
+            else:
+                filepath = os.path.join(directory, "archive", filename)
 
-                screenshot.save(filepath)
-                print(f"Screenshot saved to {filepath}")
+            screenshot.save(filepath)
+            print(f"Screenshot saved to {filepath}")
 
         except Exception as e:
             print(f"Error capturing or saving screenshot: {e}")
