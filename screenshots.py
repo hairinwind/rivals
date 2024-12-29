@@ -5,6 +5,7 @@ import datetime
 from AppKit import NSWorkspace, NSApplicationActivateIgnoringOtherApps
 from pynput import keyboard
 import threading
+import sys  # Required to quit the program
 
 # Global variable to control screenshot capturing
 capture_active = False
@@ -98,11 +99,15 @@ def on_press(key):
                 print("Starting screenshot capture...")
                 # Run capture in a separate thread to avoid blocking the listener
                 threading.Thread(target=capture_screenshots, args=(1, "screenshots", "Roblox"), daemon=True).start()
+        elif key.char == 'q':  # Quit the program
+            print("Quitting the program...")
+            sys.exit(0)  # Exit the program
     except AttributeError:
         pass
 
 def main():
     print("Press 'z' to start or stop capturing screenshots.")
+    print("Press 'q' to quit the program.")
     
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
