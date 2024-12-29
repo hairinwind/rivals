@@ -42,21 +42,22 @@ if __name__ == "__main__":
 
     # Example usage:
     # Change these to match your rectangle coordinates
-    rect_x1 = 60
-    rect_y1 = 135
-    rect_x2 = 80
-    rect_y2 = 150
+    # rect_x1 = 60
+    # rect_y1 = 135
+    # rect_x2 = 80
+    # rect_y2 = 150
+    rect_x1 = 72
+    rect_y1 = 137
+    rect_x2 = 75
+    rect_y2 = 140
 
     # Input and output paths (modify as needed)
-    input_image_path = "screenshots/screenshot_0013.png"
-    output_image_path = "screenshots/screenshot_0013_out.png"
+    input_image_path = "screenshots/screenshot_0110.png"
+    output_image_path = "screenshots/screenshot_0110_out.png"
 
     # Draw the rectangle
     draw_rectangle_on_image(
         input_image_path,
         output_image_path,
-        rect_x1,
-        rect_y1,
-        rect_x2,
-        rect_y2
+        27, 51, 49, 73
     )

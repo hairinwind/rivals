@@ -1,9 +1,10 @@
 import pyautogui
 import time
 import os
-import numpy as np
+import datetime
 from AppKit import NSWorkspace, NSApplicationActivateIgnoringOtherApps
 from pynput import keyboard
+import threading
 
 # Global variable to control screenshot capturing
 capture_active = False
@@ -22,7 +23,7 @@ def capture_screenshots(interval=1, directory="screenshots", window_title=None):
             print(e)
             return
 
-    while capture_active:
+    while capture_active:  # Respect the global capture_active flag
         try:
             if window_title:
                 region_tuple = (
@@ -35,12 +36,16 @@ def capture_screenshots(interval=1, directory="screenshots", window_title=None):
             else:
                 screenshot = pyautogui.screenshot()
 
-            screenshot_count += 1
-            filename = f"screenshot_{screenshot_count:04d}.png"
+            # Generate filename with timestamp and sequence
+            timestamp = datetime.datetime.now().strftime("%m%d%H%M")  # Format: MMDDHHMM
+            filename = f"screenshot_{timestamp}-{screenshot_count:04d}.png"
             filepath = os.path.join(directory, filename)
 
+            # Save screenshot
             screenshot.save(filepath)
             print(f"Screenshot saved to {filepath}")
+
+            screenshot_count += 1
 
         except Exception as e:
             print(f"Error capturing or saving screenshot: {e}")
@@ -84,20 +89,20 @@ def on_press(key):
     global capture_active
 
     try:
-        if key.char == 'z':  # Start capturing screenshots
-            if not capture_active:
+        if key.char == 'z':  # Toggle capturing screenshots
+            if capture_active:
+                capture_active = False
+                print("Stopping screenshot capture...")
+            else:
                 capture_active = True
                 print("Starting screenshot capture...")
-                capture_screenshots(interval=0.5, window_title="Roblox")  # Start capture
-        elif key.char == 'p':  # Stop capturing screenshots
-            capture_active = False
-            print("Stopping screenshot capture...")
+                # Run capture in a separate thread to avoid blocking the listener
+                threading.Thread(target=capture_screenshots, args=(1, "screenshots", "Roblox"), daemon=True).start()
     except AttributeError:
         pass
 
 def main():
-    print("Press 'z' to start capturing screenshots.")
-    print("Press 'p' to stop capturing screenshots.")
+    print("Press 'z' to start or stop capturing screenshots.")
     
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
