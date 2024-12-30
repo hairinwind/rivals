@@ -4,6 +4,7 @@ import os
 import datetime
 from AppKit import NSWorkspace, NSApplicationActivateIgnoringOtherApps
 from pynput import keyboard
+from window import get_window_coordinates_by_title
 import threading
 import sys  # Required to quit the program
 
@@ -19,7 +20,7 @@ def capture_screenshots(interval=1, directory="screenshots", window_title=None):
 
     if window_title:
         try:
-            window_coordinates = get_window_coordinates(window_title)
+            window_coordinates = get_window_coordinates_by_title(window_title)
         except Exception as e:
             print(e)
             return
@@ -52,38 +53,6 @@ def capture_screenshots(interval=1, directory="screenshots", window_title=None):
             print(f"Error capturing or saving screenshot: {e}")
 
         time.sleep(interval)
-
-def get_window_coordinates(window_title):
-    """Gets the coordinates of the specified window on macOS using Quartz."""
-    workspace = NSWorkspace.sharedWorkspace()
-    running_apps = workspace.runningApplications()
-    
-    for app in running_apps:
-        if "roblox" in app.localizedName().lower():
-            app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps)
-            time.sleep(0.5)
-            
-            from Quartz import (
-                CGWindowListCopyWindowInfo,
-                kCGWindowListOptionOnScreenOnly,
-                kCGNullWindowID
-            )
-            
-            window_list = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID)
-            for window in window_list:
-                owner_name = window.get('kCGWindowOwnerName', '')
-                if "roblox" in str(owner_name).lower():
-                    bounds = window.get('kCGWindowBounds')
-                    if bounds:
-                        coords = {
-                            'x': bounds['X'],
-                            'y': bounds['Y'],
-                            'width': bounds['Width'],
-                            'height': bounds['Height']
-                        }
-                        print(f"Found Roblox window coordinates: {coords}")
-                        return coords
-    return None
 
 def on_press(key):
     """Handle key press events."""
