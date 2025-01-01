@@ -68,10 +68,22 @@ class DetectionModel:
 
         return coordinates
     
+    def get_position(self, image):
+        coordinates = self.get_detection_coordinates(image)
+        print("target found: ", coordinates)
+        if coordinates is None:
+            return None, None
+        box = coordinates.xyxy[0]
+        x_center = int((box[0] + box[2]) / 2)  # Center X
+        y_center = int((box[1] + box[3]) / 2)
+        return x_center, y_center
+    
+
 if __name__ == "__main__":
     # Initialize the DetectionModel
     model = DetectionModel()
-    image = cv2.imread("screenshots/screenshot_12281818-0027.png")
+    # image = cv2.imread("screenshots/screenshot_12281818-0027.png")
+    image = cv2.imread("screenshots/Xnip2024-12-31_17-46-46.jpg")
 
     # # Load an image file into binary format
     # with open("screenshots/screenshot_12281818-0027.png", "rb") as f:
