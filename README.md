@@ -19,4 +19,9 @@ need set mac accessibility
 3.	Add the terminal or IDE you are using to run your script (e.g., Terminal, PyCharm, VS Code).
 ![](README_images/20241229162550.png)
 
-
+## assist in game 
+once the programs is started
+- program starts to record screen
+- program sends the screen to the model 
+- program receives the coordinate from the model
+- program move the mouse to the coordinate (this does not work in roblox, first person view)
