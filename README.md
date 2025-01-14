@@ -25,3 +25,6 @@ once the programs is started
 - program sends the screen to the model 
 - program receives the coordinate from the model
 - program move the mouse to the coordinate (this does not work in roblox, first person view)
+
+## blocked, mouse move not working in roblox
+thought: can I send mouse move bluetooth signals from my machine and also received by my machine?
